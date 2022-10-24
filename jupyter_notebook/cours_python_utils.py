@@ -2,21 +2,16 @@ import re
 import traceback
 import numpy as np
 
-__unittest = True
-
 print_re = re.compile( "\n[ \t]*print *\(" )
 
-def test_with_expected( test_f, f, args, expected, places = 7, almost = False ):
+def test_with_expected( test_f, f, args, expected ):
     if not isinstance( args, tuple ):
         args = (args,)
     try:
         res = f( *args )
     except Exception as e:
         test_f.fail( "L'appel de votre fonction a échoué avec les arguments {0} et l'exception {1}\n{2}".format(args, e, traceback.format_exc() ) ) 
-    if almost:
-        test_f.assertAlmostEqual( res, expected, places = places, msg = "Avec {0} en entrée, votre fonction devrait renvoyer {1}, elle a renvoyé {2}".format(args, expected, res) )
-    else:
-        test_f.assertEqual( res, expected, "Avec {0} en entrée, votre fonction devrait renvoyer {1}, elle a renvoyé {2}".format(args, expected, res) )
+    test_f.assertEqual( res, expected, "Avec {0} en entrée, votre fonction devrait renvoyer {1}, elle a renvoyé {2}".format(args, expected, res) )
 
 def warning_on_print( In ):
     if print_re.search( In[-1] ):
